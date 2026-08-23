@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>走進孔廟</title>
+    <meta
+      name="description"
+      content="臺南孔廟特殊門票紀念網頁：入口動畫、抽籤解籤與許願、建築故事、參觀路線與周邊指南。"
+    />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="stylesheet" href="assets/style.css" />
+  </head>
+  <body>
+    <!-- ============ 入口動畫：紅磚牆消失 → 廟門開啟 → 窗花拼合 ============ -->
+    <div id="intro" aria-hidden="true">
+      <div id="introBrick"></div>
+      <div id="introDoor">
+        <div class="door-panel left"></div>
+        <div class="door-panel right"></div>
+      </div>
+      <div id="introWindow"></div>
+      <div id="introLabel">
+        <div class="intro-title">走進孔廟</div>
+        <div class="intro-sub">全臺首學．臺南孔廟</div>
+      </div>
+      <button id="introSkip" type="button">略過動畫</button>
+    </div>
+
+    <!-- ============ 主站 ============ -->
+    <div id="site" class="hidden">
+      <nav id="topnav">
+        <div class="brand">走進孔廟</div>
+        <button id="navToggle" aria-label="展開選單">☰</button>
+        <div id="navLinks">
+          <a href="#fortune">抽籤解籤</a>
+          <a href="#architecture">建築特色</a>
+          <a href="#stories">孔廟故事</a>
+          <a href="#context">在地脈絡</a>
+          <a href="#route">參觀路線</a>
+          <a href="#nearby">周邊景點</a>
+          <a href="#plants">園區植物</a>
+        </div>
+      </nav>
+
+      <!-- ---- Hero ---- -->
+      <header id="hero">
+        <div class="roofline"></div>
+        <div class="eyebrow">全臺首學．臺南孔廟</div>
+        <h1>走進孔廟</h1>
+        <p class="hero-desc">感謝你帶走這張特殊門票紀念品。往下滑，先為今天抽一支籤，<br />再一起走一趟孔廟三百多年的故事。</p>
+        <a class="scroll-hint" href="#fortune">開始 ↓</a>
+      </header>
+
+      <!-- ---- 抽籤解籤＋許願 ---- -->
+      <section id="fortune" class="panel">
+        <div class="panel-head">
+          <div class="eyebrow">今日籤詩</div>
+          <h2>抽籤與解籤</h2>
+        </div>
+
+        <div class="fortune-card">
+          <div id="drawIdle">
+            <div class="draw-token">籤</div>
+            <p class="draw-hint">點一下，抽今天屬於你的一支籤</p>
+            <button class="btn-primary" id="drawBtn">點按抽籤</button>
+          </div>
+          <div id="drawResult" class="hidden">
+            <div class="stars" id="resultStars"></div>
+            <div class="fortune-title" id="resultTitle"></div>
+            <p class="fortune-text" id="resultText"></p>
+            <button class="btn-secondary" id="saveBtn">保存此籤詩</button>
+            <button class="btn-ghost" id="redrawBtn">再抽一次</button>
+          </div>
+        </div>
+
+        <div class="wish-card">
+          <div class="eyebrow">許願牌</div>
+          <h3>留下一個願望</h3>
+          <p class="wish-hint">寫下的願望只會保存在你自己的手機裡，不會被任何人看到，也可以存成一張祈福圖片。</p>
+          <textarea id="wishInput" maxlength="60" placeholder="例如：希望這學期考試順利……"></textarea>
+          <div class="wish-actions">
+            <button class="btn-primary" id="wishHangBtn">掛上許願牌</button>
+          </div>
+          <div id="wishWall" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- ---- 建築特色 ---- -->
+      <section id="architecture" class="panel alt">
+        <div class="panel-head">
+          <div class="eyebrow">認識孔廟</div>
+          <h2>建築特色</h2>
+          <p class="panel-intro">紅牆、宮牆、燕尾脊與花格窗——每一處細節都藏著三百多年的規制與心意。</p>
+        </div>
+        <div id="architectureList" class="card-grid"></div>
+      </section>
+
+      <!-- ---- 孔廟的故事：八方御匾 ---- -->
+      <section id="stories" class="panel">
+        <div class="panel-head">
+          <div class="eyebrow">孔廟故事</div>
+          <h2>大成殿八方御匾</h2>
+          <p class="panel-intro">從康熙到光緒，八位清朝皇帝各賜一方御匾，是全球僅見完整保存的孔廟御匾系列。</p>
+        </div>
+        <div id="plaqueList" class="plaque-list"></div>
+        <p class="plaque-epilogue" id="plaqueEpilogue"></p>
+      </section>
+
+      <!-- ---- 在地連結歷史脈絡 ---- -->
+      <section id="context" class="panel alt">
+        <div class="panel-head">
+          <div class="eyebrow">在地連結</div>
+          <h2>歷史脈絡</h2>
+        </div>
+        <div id="contextList" class="timeline"></div>
+      </section>
+
+      <!-- ---- 建議參觀路線 ---- -->
+      <section id="route" class="panel">
+        <div class="panel-head">
+          <div class="eyebrow">建議參觀路線</div>
+          <h2>一路走過三百年</h2>
+          <p class="panel-intro">依照孔廟建築軸線設計的參觀順序，約需 40–60 分鐘，也可依現場動線彈性調整。</p>
+        </div>
+        <ol id="routeList" class="route-list"></ol>
+      </section>
+
+      <!-- ---- 周邊景點 ---- -->
+      <section id="nearby" class="panel alt">
+        <div class="panel-head">
+          <div class="eyebrow">周邊景點指南</div>
+          <h2>順道走走</h2>
+        </div>
+        <div id="nearbyList" class="card-grid"></div>
+      </section>
+
+      <!-- ---- 園區植物 ---- -->
+      <section id="plants" class="panel">
+        <div class="panel-head">
+          <div class="eyebrow">園區植物</div>
+          <h2>孔廟裡的樹</h2>
+        </div>
+        <div id="plantsList" class="card-grid"></div>
+      </section>
+
+      <footer id="siteFooter">
+        <p>資料來源：臺南孔廟官方網站、國家文化資產網、台南旅遊網。抽籤內容為本站原創祝福語，非官方籤詩。</p>
+        <button id="replayIntro" type="button">重新觀看開場動畫</button>
+      </footer>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <a
+      id="mascotLink"
+      class="mascot"
+      href="https://www.tn-confucius.org.tw"
+      target="_blank"
+      rel="noopener"
+      aria-label="前往台南孔廟官網"
+    >
+      <img id="mascotImg" src="assets/mascot/dance-1.png" alt="禮虎，點一下前往台南孔廟官網" />
+    </a>
+
+    <script src="assets/data.js"></script>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
