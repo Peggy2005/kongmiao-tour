@@ -233,19 +233,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const plantsList = document.getElementById("plantsList");
   plantsList.innerHTML = PLANTS.map(
-    (p) => `<div class="card">
+    (p, i) => `<button type="button" class="card plant-card" data-plant-index="${i}">
       <h3>${p.title}</h3>
+      <div class="card-latin">${p.latin}</div>
       <p>${p.text}</p>
-    </div>`
+      <span class="card-more">看照片與詳細介紹 →</span>
+    </button>`
   ).join("");
 
-  // ================= 抽籤互動 =================
-  const fortuneCard = document.querySelector(".fortune-card");
-  const drawBtn = document.getElementById("drawBtn");
-  const redrawBtn = document.getElementById("redrawBtn");
+  // ---- 植物詳細內容彈窗 ----
+  const plantModal = document.getElementById("plantModal");
+  const plantModalBackdrop = document.getElementById("plantModalBackdrop");
+  const plantModalClose = document.getElementById("plantModalClose");
+  const plantModalImg = document.getElementById("plantModalImg");
+  const plantModalCredit = document.getElementById("plantModalCredit");
+  const plantModalTitle = document.getElementById("plantModalTitle");
+  const plantModalLatin = document.getElementById("plantModalLatin");
+  const plantModalDetail = document.getElementById("plantModalDetail");
+
+  function openPlantModal(plant) {
+    plantModalImg.src = plant.image;
+    plantModalImg.alt = plant.imageAlt;
+    plantModalCredit.innerHTML = `圖片來源：Wikimedia Commons．${escapeHtml(
+      plant.credit
+    )}（${escapeHtml(plant.license)}）－<a href="${plant.sourceUrl}" target="_blank" rel="noopener">原始檔案</a>　·　示意圖，非孔廟現場實際拍攝`;
+    plantModalTitle.textContent = plant.title;
+    plantModalLatin.textContent = plant.latin;
+    plantModalDetail.textContent = plant.detail;
+    plantModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+  function closePlantModal() {
+    plantModal.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+  plantsList.addEventListener("click", (e) => {
+    const btn = e.target.closest(".plant-card");
+    if (!btn) return;
+    openPlantModal(PLANTS[Number(btn.dataset.plantIndex)]);
+  });
+  plantModalBackdrop.addEventListener("click", closePlantModal);
+  plantModalClose.addEventListener("click", closePlantModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !plantModal.classList.contains("hidden")) closePlantModal();
+  });
+
+  // ================= 抽籤互動：籤筒，點一下或搖一搖手機 =================
+  const qiantongBtn = document.getElementById("qiantongBtn");
+  const motionEnableBtn = document.getElementById("motionEnableBtn");
   const drawIdle = document.getElementById("drawIdle");
   const drawResult = document.getElementById("drawResult");
   let currentFortune = null;
+  let armed = true; // 目前是否可以觸發下一次抽籤（畫面在待抽籤狀態）
 
   function renderFortune() {
     currentFortune = drawFortune();
@@ -258,26 +297,73 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function doDraw() {
-    drawBtn.disabled = true;
-    fortuneCard.classList.add("drawing");
+    if (!armed) return;
+    armed = false;
+    qiantongBtn.disabled = true;
+    qiantongBtn.classList.add("shaking");
+    window.setTimeout(() => qiantongBtn.classList.add("dropped"), 380);
     window.setTimeout(() => {
       renderFortune();
       drawIdle.classList.add("hidden");
       drawResult.classList.remove("hidden");
-      fortuneCard.classList.remove("drawing");
-    }, 1100);
+    }, 1300);
   }
 
-  drawBtn.addEventListener("click", doDraw);
-  redrawBtn.addEventListener("click", () => {
+  qiantongBtn.addEventListener("click", doDraw);
+
+  document.getElementById("redrawBtn").addEventListener("click", () => {
     drawResult.classList.add("hidden");
     drawIdle.classList.remove("hidden");
-    drawBtn.disabled = false;
+    qiantongBtn.disabled = false;
+    qiantongBtn.classList.remove("shaking", "dropped");
+    armed = true;
   });
 
   document.getElementById("saveBtn").addEventListener("click", (e) => {
     if (currentFortune) saveFortuneAsImage(currentFortune, e.currentTarget);
   });
+
+  // ---- 搖一搖偵測：iOS 需要使用者手動觸發授權，Android／其他瀏覽器可直接監聽 ----
+  let motionArmed = false;
+  let lastShakeAt = 0;
+  function handleMotion(e) {
+    if (!armed) return;
+    const a = e.accelerationIncludingGravity || e.acceleration;
+    if (!a) return;
+    const magnitude = Math.abs(a.x || 0) + Math.abs(a.y || 0) + Math.abs(a.z || 0);
+    const now = Date.now();
+    if (magnitude > 38 && now - lastShakeAt > 1200) {
+      lastShakeAt = now;
+      doDraw();
+    }
+  }
+  function armMotion() {
+    if (motionArmed) return;
+    motionArmed = true;
+    window.addEventListener("devicemotion", handleMotion);
+  }
+
+  if (typeof window.DeviceMotionEvent !== "undefined" && typeof window.DeviceMotionEvent.requestPermission === "function") {
+    // iOS 13+：需要使用者主動點按才能請求動作感應權限
+    motionEnableBtn.classList.remove("hidden");
+    motionEnableBtn.addEventListener("click", async () => {
+      try {
+        const result = await window.DeviceMotionEvent.requestPermission();
+        if (result === "granted") {
+          armMotion();
+          motionEnableBtn.classList.add("hidden");
+          showToast("搖一搖偵測已開啟，搖動手機試試看");
+        } else {
+          showToast("沒有開啟動作感應也沒關係，點籤筒一樣能抽籤");
+        }
+      } catch (err) {
+        showToast("這台裝置無法開啟搖一搖，改點籤筒抽籤即可");
+      }
+    });
+  } else if (window.DeviceMotionEvent) {
+    // Android／其他瀏覽器：不需額外授權，直接監聽
+    armMotion();
+  }
 
   function saveFortuneAsImage(fortune, btn) {
     const w = 750, h = 1000;

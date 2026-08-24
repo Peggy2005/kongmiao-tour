@@ -68,9 +68,32 @@
 
         <div class="fortune-card">
           <div id="drawIdle">
-            <div class="draw-token">籤</div>
-            <p class="draw-hint">點一下，抽今天屬於你的一支籤</p>
-            <button class="btn-primary" id="drawBtn">點按抽籤</button>
+            <button type="button" id="qiantongBtn" class="qiantong-btn" aria-label="搖一搖或點一下抽籤">
+              <svg class="qiantong-svg" viewBox="0 0 120 172" aria-hidden="true">
+                <g class="qiantong-wiggle" style="transform-origin: 60px 162px">
+                  <ellipse cx="60" cy="160" rx="38" ry="8" fill="#3f2a1c" opacity="0.35" />
+                  <rect x="22" y="66" width="76" height="86" rx="10" fill="#6b4a34" />
+                  <path d="M22 66 Q60 80 98 66 L98 78 Q60 92 22 78 Z" fill="#5a3b28" />
+                  <ellipse cx="60" cy="66" rx="38" ry="11" fill="#8c3324" />
+                  <ellipse cx="60" cy="66" rx="30" ry="7" fill="#6d2419" />
+                  <g class="qiantong-sticks" stroke="#e9d9b8" stroke-width="5" stroke-linecap="round">
+                    <line x1="34" y1="64" x2="28" y2="16" />
+                    <line x1="46" y1="62" x2="43" y2="6" />
+                    <line x1="72" y1="62" x2="76" y2="10" />
+                    <line x1="85" y1="64" x2="91" y2="20" />
+                  </g>
+                  <g class="qiantong-sticks" stroke="#a9812f" stroke-width="4" stroke-linecap="round">
+                    <line x1="58" y1="63" x2="57" y2="24" />
+                  </g>
+                </g>
+                <g id="fallingStick">
+                  <line x1="60" y1="62" x2="60" y2="14" stroke="#a9812f" stroke-width="6" stroke-linecap="round" />
+                  <circle cx="60" cy="12" r="5" fill="#8c3324" />
+                </g>
+              </svg>
+            </button>
+            <p class="draw-hint">搖一搖手機，或點一下籤筒抽籤</p>
+            <button class="btn-ghost hidden" id="motionEnableBtn" type="button">開啟搖一搖偵測</button>
           </div>
           <div id="drawResult" class="hidden">
             <div class="stars" id="resultStars"></div>
@@ -156,6 +179,21 @@
         </div>
         <div id="plantsList" class="card-grid"></div>
       </section>
+
+      <!-- ---- 植物詳細內容彈窗 ---- -->
+      <div id="plantModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="plantModalTitle">
+        <div class="modal-backdrop" id="plantModalBackdrop"></div>
+        <div class="modal-card">
+          <button type="button" class="modal-close" id="plantModalClose" aria-label="關閉">✕</button>
+          <img id="plantModalImg" class="modal-img" alt="" />
+          <p class="modal-credit" id="plantModalCredit"></p>
+          <div class="modal-body">
+            <h3 id="plantModalTitle"></h3>
+            <p class="modal-latin" id="plantModalLatin"></p>
+            <p id="plantModalDetail"></p>
+          </div>
+        </div>
+      </div>
 
       <footer id="siteFooter">
         <p>資料來源：臺南孔廟官方網站、國家文化資產網、台南旅遊網。抽籤內容為本站原創祝福語，非官方籤詩。</p>

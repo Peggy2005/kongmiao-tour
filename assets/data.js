@@ -188,23 +188,57 @@ const NEARBY = [
   },
 ];
 
-// ---------------- 園區植物小介紹 ----------------
+// ---------------- 園區植物小介紹（點進去看詳細內容＋真實物種照片） ----------------
+// 圖片皆取自 Wikimedia Commons 公開授權圖庫，為該樹種的代表性照片（示意），
+// 並非孔廟現場實際拍攝，已在 credit 註明出處與授權條款、附原始檔案連結。
 const PLANTS = [
   {
     title: "榕樹",
-    text: "抬頭看看中庭這棵老榕樹——它是台南市代表性老樹之一，盤根錯節、樹蔭濃密，「杏壇夏蔭」的美名正是由它而來，也是遊客歇腳乘涼的最佳去處。",
+    latin: "Ficus microcarpa",
+    text: "抬頭看看中庭這棵老榕樹——盤根錯節、樹蔭濃密，「杏壇夏蔭」的美名正是由它而來。",
+    detail:
+      "學名 Ficus microcarpa，桑科榕屬常綠大喬木，臺灣低海拔平地最常見的老樹樹種之一，正式俗名「正榕」。榕樹會從枝幹垂下細長的氣生根，落地後逐漸增粗成為支柱根，樹冠因此能不斷向外擴張、越長越開闊，是廟埕、學校最常見的遮蔭大樹。孔廟中庭這棵老榕樹盤根錯節，樹蔭濃密，「杏壇夏蔭」的美名正是由它而來，也是遊客歇腳乘涼的最佳去處。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Starr_080608-7463_Ficus_microcarpa.jpg?width=900",
+    imageAlt: "榕樹（Ficus microcarpa）樹冠與氣生根特寫",
+    credit: "Forest & Kim Starr",
+    license: "CC BY 3.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Starr_080608-7463_Ficus_microcarpa.jpg",
   },
   {
     title: "樟樹",
-    text: "孔廟門前曾栽有樟樹，象徵讀書人的「操守」。原樹相繼枯死後，後人依循傳統重新復植，把這份寓意延續了下來。",
+    latin: "Cinnamomum camphora",
+    text: "孔廟門前曾栽有樟樹，象徵讀書人的「操守」，原樹枯死後依傳統重新復植。",
+    detail:
+      "學名 Cinnamomum camphora，樟科常綠喬木，原生於臺灣與中國南方，樹幹粗壯、樹皮縱向深裂，枝葉搓揉後會散發濃郁樟腦香氣。日治時期，樟腦曾是臺灣重要的出口經濟作物，樟樹也因此與這塊土地的近代史緊緊相繫。孔廟門前復植的樟樹，取其木質堅韌、歷久不朽的特質，象徵讀書人堅守原則、不輕易動搖的「操守」。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Camphor_tree.jpg?width=900",
+    imageAlt: "樟樹（Cinnamomum camphora）樹形全貌",
+    credit: "Santha Kumar.G",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Camphor_tree.jpg",
   },
   {
     title: "楷樹",
-    text: "相傳楷樹是孔子弟子子貢，在孔子墓旁所植的樹種，象徵「品德」端正。孔廟門前復植楷樹，呼應著儒家對品格的重視。",
+    latin: "Pistacia chinensis（黃連木）",
+    text: "相傳楷樹是孔子弟子子貢在墓旁所植的樹種，象徵讀書人端正的「品德」。",
+    detail:
+      "正式名稱「黃連木」，學名 Pistacia chinensis，漆樹科落葉喬木，枝幹挺直、木質堅韌、紋理細膩。相傳孔子過世後，弟子子貢在墓旁守喪六年，並親手栽種了這種樹——「楷木」因此與另一種樹「模」合稱，成了「楷模」一詞的由來。孔廟門前復植楷樹，正是取其枝幹不彎曲的特質，呼應儒家對讀書人品格端正、不阿諛曲折的重視。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Pistacia_chinensis_(Anacardiaceae)_(tree).JPG?width=900",
+    imageAlt: "楷樹／黃連木（Pistacia chinensis）樹形全貌",
+    credit: "Magnus Manske",
+    license: "CC BY-SA 3.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Pistacia_chinensis_(Anacardiaceae)_(tree).JPG",
   },
   {
     title: "楓樹",
-    text: "楓樹象徵讀書人的「氣節」，與樟樹、楷樹並列孔廟門前三樹，合稱操守、品德、氣節的精神象徵——是孔廟庭園裡，最富寓意的一組植栽。",
+    latin: "Liquidambar formosana（楓香）",
+    text: "楓樹象徵讀書人的「氣節」，與樟樹、楷樹並列孔廟門前三樹。",
+    detail:
+      "一般所稱的「楓樹」，多指「楓香」，學名 Liquidambar formosana，金縷梅科落葉喬木，是臺灣平地與低海拔山區常見的原生樹種。楓香的葉片呈掌狀三裂，入秋轉冬時葉色由綠轉黃、轉紅，是臺灣少數會有明顯秋色的原生樹種之一。孔廟門前的楓樹，象徵讀書人歷經寒暑仍堅持到底的「氣節」，與樟樹的操守、楷樹的品德並列，合稱孔廟門前三樹的精神象徵。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Liquidambar_formosana_01.jpg?width=900",
+    imageAlt: "楓香（Liquidambar formosana）掌狀三裂葉特寫",
+    credit: "Yoiyoi_kancho",
+    license: "公有領域（Public Domain）",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Liquidambar_formosana_01.jpg",
   },
 ];
 
