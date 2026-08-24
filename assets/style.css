@@ -650,8 +650,8 @@ button {
   margin: 0;
   font-size: 0.92rem;
 }
-/* ---- 植物卡片：可點擊，開啟詳細內容＋真實照片彈窗 ---- */
-button.card.plant-card {
+/* ---- 可點擊卡片（建築特色／周邊景點／園區植物共用）：開啟詳細內容＋真實照片彈窗 ---- */
+button.card.detail-card {
   display: block;
   width: 100%;
   text-align: left;
@@ -659,21 +659,21 @@ button.card.plant-card {
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
-button.card.plant-card:hover,
-button.card.plant-card:focus-visible {
+button.card.detail-card:hover,
+button.card.detail-card:focus-visible {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(43, 33, 27, 0.1);
 }
-button.card.plant-card:active {
+button.card.detail-card:active {
   transform: translateY(0);
 }
-.plant-card .card-latin {
+.detail-card .card-latin {
   font-size: 0.72rem;
   font-style: italic;
   color: var(--ink-soft);
   margin-bottom: 0.7rem;
 }
-.plant-card .card-more {
+.detail-card .card-more {
   display: inline-block;
   margin-top: 0.9rem;
   font-size: 0.8rem;

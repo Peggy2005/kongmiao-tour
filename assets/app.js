@@ -181,11 +181,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ================= 內容區塊渲染 =================
   const architectureList = document.getElementById("architectureList");
   architectureList.innerHTML = ARCHITECTURE.map(
-    (a) => `<div class="card">
+    (a, i) => `<button type="button" class="card detail-card" data-source="architecture" data-index="${i}">
       <h3>${a.title}</h3>
       <div class="card-sub">${a.subtitle}</div>
       <p>${a.text}</p>
-    </div>`
+      <span class="card-more">看照片與詳細介紹 →</span>
+    </button>`
   ).join("");
 
   const plaqueList = document.getElementById("plaqueList");
@@ -224,16 +225,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const nearbyList = document.getElementById("nearbyList");
   nearbyList.innerHTML = NEARBY.map(
-    (n) => `<div class="card">
+    (n, i) => `<button type="button" class="card detail-card" data-source="nearby" data-index="${i}">
       <span class="card-walk">${n.walk}</span>
       <h3>${n.title}</h3>
       <p>${n.text}</p>
-    </div>`
+      <span class="card-more">看照片與詳細介紹 →</span>
+    </button>`
   ).join("");
 
   const plantsList = document.getElementById("plantsList");
   plantsList.innerHTML = PLANTS.map(
-    (p, i) => `<button type="button" class="card plant-card" data-plant-index="${i}">
+    (p, i) => `<button type="button" class="card detail-card" data-source="plants" data-index="${i}">
       <h3>${p.title}</h3>
       <div class="card-latin">${p.latin}</div>
       <p>${p.text}</p>
@@ -241,41 +243,56 @@ document.addEventListener("DOMContentLoaded", () => {
     </button>`
   ).join("");
 
-  // ---- 植物詳細內容彈窗 ----
-  const plantModal = document.getElementById("plantModal");
-  const plantModalBackdrop = document.getElementById("plantModalBackdrop");
-  const plantModalClose = document.getElementById("plantModalClose");
-  const plantModalImg = document.getElementById("plantModalImg");
-  const plantModalCredit = document.getElementById("plantModalCredit");
-  const plantModalTitle = document.getElementById("plantModalTitle");
-  const plantModalLatin = document.getElementById("plantModalLatin");
-  const plantModalDetail = document.getElementById("plantModalDetail");
+  // ---- 詳細內容彈窗（建築特色／周邊景點／園區植物共用）----
+  const DETAIL_SOURCES = { architecture: ARCHITECTURE, nearby: NEARBY, plants: PLANTS };
+  // 只有植物用的是「該物種代表照」，不是孔廟現場實拍，要額外註明；
+  // 建築特色與周邊景點的照片都是孔廟／周邊景點現場實拍，不需要這行但示。
+  const REPRESENTATIVE_SOURCES = new Set(["plants"]);
 
-  function openPlantModal(plant) {
-    plantModalImg.src = plant.image;
-    plantModalImg.alt = plant.imageAlt;
-    plantModalCredit.innerHTML = `圖片來源：Wikimedia Commons．${escapeHtml(
-      plant.credit
-    )}（${escapeHtml(plant.license)}）－<a href="${plant.sourceUrl}" target="_blank" rel="noopener">原始檔案</a>　·　示意圖，非孔廟現場實際拍攝`;
-    plantModalTitle.textContent = plant.title;
-    plantModalLatin.textContent = plant.latin;
-    plantModalDetail.textContent = plant.detail;
-    plantModal.classList.remove("hidden");
+  const detailModal = document.getElementById("detailModal");
+  const detailModalBackdrop = document.getElementById("detailModalBackdrop");
+  const detailModalClose = document.getElementById("detailModalClose");
+  const detailModalImg = document.getElementById("detailModalImg");
+  const detailModalCredit = document.getElementById("detailModalCredit");
+  const detailModalTitle = document.getElementById("detailModalTitle");
+  const detailModalLatin = document.getElementById("detailModalLatin");
+  const detailModalDetail = document.getElementById("detailModalDetail");
+
+  function openDetailModal(item, sourceKey) {
+    detailModalImg.src = item.image;
+    detailModalImg.alt = item.imageAlt;
+    const suffix = REPRESENTATIVE_SOURCES.has(sourceKey) ? "　·　示意圖，非孔廟現場實際拍攝" : "";
+    detailModalCredit.innerHTML = `圖片來源：Wikimedia Commons．${escapeHtml(
+      item.credit
+    )}（${escapeHtml(item.license)}）－<a href="${item.sourceUrl}" target="_blank" rel="noopener">原始檔案</a>${suffix}`;
+    detailModalTitle.textContent = item.title;
+    if (item.latin) {
+      detailModalLatin.textContent = item.latin;
+      detailModalLatin.classList.remove("hidden");
+    } else {
+      detailModalLatin.classList.add("hidden");
+    }
+    detailModalDetail.textContent = item.detail;
+    detailModal.classList.remove("hidden");
     document.body.style.overflow = "hidden";
   }
-  function closePlantModal() {
-    plantModal.classList.add("hidden");
+  function closeDetailModal() {
+    detailModal.classList.add("hidden");
     document.body.style.overflow = "";
   }
-  plantsList.addEventListener("click", (e) => {
-    const btn = e.target.closest(".plant-card");
-    if (!btn) return;
-    openPlantModal(PLANTS[Number(btn.dataset.plantIndex)]);
+  document.querySelectorAll("#architectureList, #nearbyList, #plantsList").forEach((list) => {
+    list.addEventListener("click", (e) => {
+      const btn = e.target.closest(".detail-card");
+      if (!btn) return;
+      const sourceKey = btn.dataset.source;
+      const item = DETAIL_SOURCES[sourceKey][Number(btn.dataset.index)];
+      openDetailModal(item, sourceKey);
+    });
   });
-  plantModalBackdrop.addEventListener("click", closePlantModal);
-  plantModalClose.addEventListener("click", closePlantModal);
+  detailModalBackdrop.addEventListener("click", closeDetailModal);
+  detailModalClose.addEventListener("click", closeDetailModal);
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !plantModal.classList.contains("hidden")) closePlantModal();
+    if (e.key === "Escape" && !detailModal.classList.contains("hidden")) closeDetailModal();
   });
 
   // ================= 抽籤互動：籤筒，點一下或搖一搖手機 =================

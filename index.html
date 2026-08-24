@@ -180,17 +180,17 @@
         <div id="plantsList" class="card-grid"></div>
       </section>
 
-      <!-- ---- 植物詳細內容彈窗 ---- -->
-      <div id="plantModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="plantModalTitle">
-        <div class="modal-backdrop" id="plantModalBackdrop"></div>
+      <!-- ---- 詳細內容彈窗（建築特色／周邊景點／園區植物共用）---- -->
+      <div id="detailModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle">
+        <div class="modal-backdrop" id="detailModalBackdrop"></div>
         <div class="modal-card">
-          <button type="button" class="modal-close" id="plantModalClose" aria-label="關閉">✕</button>
-          <img id="plantModalImg" class="modal-img" alt="" />
-          <p class="modal-credit" id="plantModalCredit"></p>
+          <button type="button" class="modal-close" id="detailModalClose" aria-label="關閉">✕</button>
+          <img id="detailModalImg" class="modal-img" alt="" />
+          <p class="modal-credit" id="detailModalCredit"></p>
           <div class="modal-body">
-            <h3 id="plantModalTitle"></h3>
-            <p class="modal-latin" id="plantModalLatin"></p>
-            <p id="plantModalDetail"></p>
+            <h3 id="detailModalTitle"></h3>
+            <p class="modal-latin hidden" id="detailModalLatin"></p>
+            <p id="detailModalDetail"></p>
           </div>
         </div>
       </div>

@@ -6,54 +6,116 @@
 // 而不是條列式的百科資料。歷史事實（年代／皇帝／經典出處）維持原樣，只調整敘述方式。
 
 // ---------------- 建築特色：跟著問句一路走進孔廟 ----------------
+// 圖片皆取自 Wikimedia Commons 公開授權圖庫的孔廟現場實拍照（非示意圖），
+// 已在 credit 註明攝影者、授權條款、原始檔案連結。
 const ARCHITECTURE = [
   {
     id: "wall",
     title: "紅牆宮牆",
     subtitle: "你有沒有發現，這片牆特別紅？",
     text: "孔子是周朝人，周代崇尚赤色，冠服宮室皆以紅色為貴，孔廟的圍牆因此沿用這個顏色。這道高牆還有個名字，叫「宮牆」——出自《論語》，子貢曾自謙，自己的學問只有肩膀高的牆，孔子的牆卻高達數仞（一仞七尺）。後人便用「萬仞宮牆」形容孔子學問之高，這句話，也就成了孔廟圍牆的定制。",
+    detail:
+      "孔子是周朝人，周代崇尚赤色，冠服宮室皆以紅色為貴，孔廟的圍牆因此沿用這個顏色，是全園區最鮮明的印象。這道高牆還有個名字，叫「宮牆」——出自《論語．子張》，子貢曾自謙，自己的學問只有肩膀高的牆，一眼就能看穿；孔子的牆卻高達數仞（一仞約七尺），一般人根本看不到牆內宗廟的壯麗與百官的富有。後人便用「萬仞宮牆」形容孔子學問之高不可測，這句話也就成了歷代孔廟圍牆的定制——只要看到成片的紅牆，就知道自己正走在儒家聖域的邊界上。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%AD%94%E5%AD%90%E5%BB%9F%E7%B4%85%E5%A2%BB.jpg?width=900",
+    imageAlt: "台南孔廟紅牆",
+    credit: "曾寶儀",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:孔子廟紅墻.jpg",
   },
   {
     id: "panyi",
     title: "泮宮石坊",
     subtitle: "在你踏進廟埕之前，還有一道更早的門",
     text: "「泮宮」二字代表學府所在，古時考取生員、正式入學稱為「入泮」。這座石坊原本立在孔廟最外圍，日治時期因闢建南門路而被往東移，如今隔著馬路，與「全臺首學」大成坊遙遙相望——是全臺灣僅存的一座泮宮石坊。",
+    detail:
+      "「泮宮」二字代表學府所在，古時考取生員、正式入學稱為「入泮」「游泮」。這座石坊原本立在孔廟最外圍，是進入整個文教區的第一道門檻；日治時期因闢建南門路，才被往東移到現在的位置，隔著馬路和「全臺首學」大成坊遙遙相望。它是全臺灣僅存的一座泮宮石坊，見證了清代府城「先有孔廟、後有城市」的文教發展軌跡。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E5%AD%94%E5%BB%9F%E6%B3%AE%E5%AE%AE.jpg?width=900",
+    imageAlt: "台南孔廟泮宮石坊",
+    credit: "臺南以成書院（1933年舊照）",
+    license: "公有領域（日本1899年著作權法，1958年前出版）",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:台南孔廟泮宮.jpg",
   },
   {
     id: "dachengfang",
     title: "全臺首學．大成坊",
     subtitle: "抬頭看看坊上那四個金字",
     text: "「大成」取自孔子「大成至聖先師」的封號。坊側還嵌著一塊「下馬碑」，提醒著每一位經過的人：從前不管官階多高，走到這裡都得下馬步行，這是對聖廟最基本的敬意。",
+    detail:
+      "「大成」取自孔子「大成至聖先師」的封號，也呼應《孟子》讚譽孔子「集大成」的評價。坊為門樓形式，十字形承重牆增加穩定效果，牆頂前後左右飛起六個燕尾脊；坊上高懸「全臺首學」四個金字，正是清領初期臺南孔廟做為全臺唯一官方學府的最佳寫照。坊側還嵌著一塊「下馬碑」，提醒每一位經過的人：不管官階多高，走到這裡都得下馬步行，這是對聖廟最基本的敬意。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E5%AD%94%E5%BB%9F%E3%80%8C%E5%85%A8%E8%87%BA%E9%A6%96%E5%AD%B8%E3%80%8D.jpg?width=900",
+    imageAlt: "台南孔廟「全臺首學」大成坊",
+    credit: "Ynto5304",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:台南孔廟「全臺首學」.jpg",
   },
   {
     id: "dachengmen",
     title: "大成門",
     subtitle: "你會不會覺得，這裡少了點什麼？",
     text: "走近大成門，你可能會發現一件怪事——兩側柱子上竟然沒有對聯。這是刻意的安排，為的是避免「孔夫子面前賣文章」之譏。不妨數數看每扇門板上的門釘，一共一百零八顆：「九」是陽數之極，取其倍數象徵聖廟威儀，是只有帝王等級才配享的規制。",
+    detail:
+      "大成門是孔廟建築組群中最華麗的一座門，兩側柱子卻刻意不書寫對聯——為的是避免「孔夫子面前賣文章」之譏，展現讀書人謙遜自持的分寸。每一扇門板上都飾有一百零八顆門釘：「九」是陽數之極，取其倍數象徵聖廟的威儀，是只有帝王等級才配享有的規制。走進這道門，就等於正式踏入了祭祀至聖先師的核心空間。",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Confucius_Temple_Tainan_-_Da_Cheng_Gate_%E8%87%BA%E5%8D%97%E5%AD%94%E5%BB%9F%E5%A4%A7%E6%88%90%E9%96%80_%282026%29_-_IMG_01.jpg?width=900",
+    imageAlt: "台南孔廟大成門",
+    credit: "Laxthree",
+    license: "CC BY-SA 4.0",
+    sourceUrl:
+      "https://commons.wikimedia.org/wiki/File:Confucius_Temple_Tainan_-_Da_Cheng_Gate_臺南孔廟大成門_(2026)_-_IMG_01.jpg",
   },
   {
     id: "dachengdian",
     title: "大成殿",
     subtitle: "整座孔廟最核心的地方，你到了",
     text: "殿前的露臺，是祭孔大典六佾舞的舞台；臺基四角，藏著形似龍頭的石刻「散水螭首」，兼作排水口，也悄悄呼應「獨佔鰲頭」的祈願。再抬頭看看正脊兩端立著的「藏經筒」，象徵孔子德配天地、道貫古今——這裡，正是等一下要找八方御匾的地方。",
+    detail:
+      "大成殿是整座孔廟的核心，殿前的露臺是祭孔大典六佾舞的舞台，臺基四角藏著形似龍頭的石刻「散水螭首」，兼作排水口，也悄悄呼應「獨佔鰲頭」的祈願。殿內供奉至聖先師孔子牌位，兩側東西廡奉祀七十二弟子及歷代先儒先賢神位；正脊兩端立著象徵孔子德配天地、道貫古今的「藏經筒」，重簷四角懸掛的八個銅鐸，寓意上天以孔子為木鐸，警醒世人。大成殿內懸掛的清代八方御匾，也是整座孔廟最重要的文化資產。",
+    image:
+      "https://commons.wikimedia.org/wiki/Special:FilePath/Confucius_Temple_Tainan_-_Ta_Cheng_Hall_%E8%87%BA%E5%8D%97%E5%AD%94%E5%BB%9F%E5%A4%A7%E6%88%90%E6%AE%BF_%282026%29_-_img_06.jpg?width=900",
+    imageAlt: "台南孔廟大成殿",
+    credit: "Chainwit.",
+    license: "CC BY 4.0",
+    sourceUrl:
+      "https://commons.wikimedia.org/wiki/File:Confucius_Temple_Tainan_-_Ta_Cheng_Hall_臺南孔廟大成殿_(2026)_-_img_06.jpg",
   },
   {
     id: "mingluntang",
     title: "明倫堂",
     subtitle: "轉個方向，你現在走進的是「左學」",
     text: "這裡是清代臺灣府學所在。試著想像三百多年前，生員就是從你腳下這道門走進去，接受教授督導、議事策論。三川門的橫額分別題著「入德之門」「聖域」「賢關」，每天低頭進出，品德的提醒，就這樣悄悄刻進日常裡。",
+    detail:
+      "「左學右廟」格局中，明倫堂即是「左學」，為清代臺灣府學所在，入學生員在此接受教授督導、議事策論，是府城正式的官辦教育場所。明倫堂三川門橫額分別題著「入德之門」「聖域」「賢關」，生員每天低頭進出，品德的提醒也就這樣悄悄刻進日常裡。今日明倫堂仍不定期舉辦讀經、書法等文教活動，延續三百多年來作育英才的角色。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E5%AD%94%E5%BB%9F%E6%98%8E%E5%80%AB%E5%A0%82%E5%A4%96.jpg?width=900",
+    imageAlt: "台南孔廟明倫堂外觀",
+    credit: "Orean190",
+    license: "CC BY-SA 3.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:台南孔廟明倫堂外.jpg",
   },
   {
     id: "wenchang",
     title: "文昌閣",
     subtitle: "全孔廟唯一一座樓塔，你看到了嗎？",
     text: "文昌閣又叫「魁星樓」，位於明倫堂左後方。清代的讀書人在科舉放榜前，總會特地繞來這裡，向主掌文運的魁星與文昌帝君，求一個好成績。",
+    detail:
+      "文昌閣又叫「魁星樓」，位於明倫堂左後方，是孔廟建築組群中唯一的樓塔狀建築，共三層樓。清代的讀書人在科舉放榜前，總會特地繞來這裡，向主掌文運的魁星與文昌帝君祈求好成績；直到今天，文昌閣仍是臺南學子考前祈福、繫上准考證影本祈願的熱門地點。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E5%AD%94%E5%BB%9F%E6%96%87%E6%98%8C%E9%96%A3.jpg?width=900",
+    imageAlt: "台南孔廟文昌閣",
+    credit: "Orean190",
+    license: "CC BY-SA 3.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:台南孔廟文昌閣.jpg",
   },
   {
     id: "roof",
     title: "燕尾脊與花格窗",
     subtitle: "最後，把視線放遠一點",
     text: "看看整片屋頂——硬山式的燕尾脊高高翹起，牆面上還點綴著細緻的花格窗。這些窗花是老師傅們一格一格拼出來的幾何圖案，既通風採光，也是他們留給後人的工藝簽名——就像你剛剛在入口動畫裡看過的那樣。",
+    detail:
+      "孔廟各殿堂多採硬山式屋頂、燕尾脊收頭，屋脊兩端裝飾著「鴟吻」（又稱螭吻）——傳說中喜歡吞火、能鎮宅避災的神獸造型，安置在屋脊兩端，象徵鎮火防災。牆面則點綴著細緻的花格窗，以磚瓦或木格拼成幾何圖案，既通風採光，也是傳統匠師展現工藝美感之處——這正是本站入口動畫「窗格一片片拼起」的靈感來源。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/KongmiaochishouTainanTaiwan.jpg?width=900",
+    imageAlt: "台南孔廟屋脊上的鴟吻（螭吻）石雕",
+    credit: "Peter Bronski",
+    license: "公有領域（Public Domain）",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:KongmiaochishouTainanTaiwan.jpg",
   },
 ];
 
@@ -155,36 +217,80 @@ const ROUTE_STEPS = [
 ];
 
 // ---------------- 周邊景點指南 ----------------
+// 圖片皆取自 Wikimedia Commons 公開授權圖庫的現場實拍照，
+// 已在 credit 註明攝影者、授權條款、原始檔案連結。
 const NEARBY = [
   {
     title: "府中街",
     walk: "孔廟側門即達",
     text: "從孔廟側門走出去就是府中街，選物小店、文創與在地小吃聚集在此，是孔廟文化園區最有生活感的一條街。",
+    detail:
+      "從孔廟側門走出去就是府中街，這條老街緊鄰泮宮石坊，早年因鄰近孔廟文教區而發展成商業街道，現在聚集選物小店、文創與在地小吃，紅磚老屋與新開的個性小店交錯，是孔廟文化園區裡最有生活感、也最適合散步慢逛的一條街。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E5%AD%94%E5%BB%9F%E8%80%81%E8%A1%97.jpg?width=900",
+    imageAlt: "府中街（台南孔廟老街）街景",
+    credit: "E501135",
+    license: "CC BY-SA 3.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:台南孔廟老街.jpg",
   },
   {
     title: "臺灣文學館",
     walk: "步行約 2 分鐘",
     text: "日治時期臺南州廳整修而成，館內典藏臺灣文學史料，與孔廟同屬府城古蹟密度最高的一角。",
+    detail:
+      "前身是日治時期的臺南州廳，紅磚洋樓建築本身就是國定古蹟。2003 年正式成立為國立臺灣文學館，是全臺第一座國家級的文學博物館，典藏、研究並展示臺灣文學史料，館內常設展介紹從古典漢詩到當代文學的完整脈絡，是認識臺灣文學不可錯過的一站。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/National_Museum_of_Taiwan_Literature_by_JohnZhang.jpg?width=900",
+    imageAlt: "國立臺灣文學館（原臺南州廳）建築外觀",
+    credit: "JohnZhang0519",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:National_Museum_of_Taiwan_Literature_by_JohnZhang.jpg",
   },
   {
     title: "湯德章紀念公園",
     walk: "步行約 5 分鐘",
     text: "圓環型的城市公園，周邊環繞多座古蹟，是府城觀光精華地帶的地標中心。",
+    detail:
+      "又稱「民生綠園」，是府城七條道路交會的圓環中心，也是臺灣公路原點「台20線」的起點。這裡紀念的湯德章律師，是二二八事件中犧牲的臺南在地菁英，公園周邊環繞著臺灣文學館、林百貨等多座古蹟，是府城古蹟密度最高的一個街廓中心。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/2022%E5%B9%B4%E7%9A%84%E6%B9%AF%E5%BE%B7%E7%AB%A0%E7%B4%80%E5%BF%B5%E5%85%AC%E5%9C%92.jpg?width=900",
+    imageAlt: "湯德章紀念公園（民生綠園）",
+    credit: "Mrmarkertw",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:2022年的湯德章紀念公園.jpg",
   },
   {
     title: "赤崁樓",
     walk: "步行約 10 分鐘",
     text: "荷治時期普羅民遮城遺址，是府城最具代表性的古蹟之一，適合安排在孔廟之後的下一站。",
+    detail:
+      "前身是荷蘭時期興建的「普羅民遮城」（Fort Provintia），鄭成功登陸後曾在此辦公，清代改建為中式樓閣，現在所見的文昌閣、海神廟等建築是清末以後陸續增建的結果。館內保存多座清代石碑與贔屭（石龜）馱碑，是府城歷史最悠久的地標之一，距離孔廟步行約十分鐘。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E8%B5%A4%E5%B4%81%E6%A8%93.jpg?width=900",
+    imageAlt: "赤崁樓（普羅民遮城遺址）",
+    credit: "Derrickhsux",
+    license: "CC BY-SA 3.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:赤崁樓.jpg",
   },
   {
     title: "大天后宮．祀典武廟",
     walk: "與赤崁樓相鄰",
     text: "全臺歷史最悠久的媽祖廟與關帝廟之一，紅牆巷弄的氛圍與孔廟相呼應，可以安排在同一條散步路線裡。",
+    detail:
+      "祀典武廟主祀關聖帝君，與一旁的大天后宮（主祀媽祖）合稱府城信仰重鎮，兩者相鄰而立，紅牆巷弄氛圍與孔廟遙相呼應。祀典武廟的山牆是府城著名的「馬背山牆」代表作，也是少數保有官方祭典規格的關帝廟；大天后宮則是全臺歷史最悠久的媽祖廟之一，兩座廟宇都是國定古蹟，適合安排在同一條散步路線裡一併參觀。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/%E5%8F%B0%E5%8D%97%E6%AD%A6%E5%BB%9F.jpg?width=900",
+    imageAlt: "祀典武廟外觀（與大天后宮相鄰）",
+    credit: "Winertai",
+    license: "CC BY-SA 3.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:台南武廟.jpg",
   },
   {
     title: "忠義國小",
     walk: "與孔廟一池之隔",
     text: "校舍前的「四方之樹」意象頂蓋，呼應孔廟「百年樹人」的教育精神，隔著水池與孔廟靜靜相望。",
+    detail:
+      "與孔廟僅一池之隔，前身歷史可追溯至日治時期，戰後改制為忠義國小。校舍前方入口設計了一個樹木意象的頂蓋，稱為「四方之樹」，融入百年老樹意象，呼應「百年樹人」的教育寓意——古老學府與現代小學，就這樣隔著一池水，延續著同一份「育人」的心意。",
+    image: "https://commons.wikimedia.org/wiki/Special:FilePath/Tainan_Municipal_Jhongyi_Elementary_School_01.jpg?width=900",
+    imageAlt: "台南市忠義國小校舍",
+    credit: "Tze Chiang Hao",
+    license: "CC BY-SA 4.0",
+    sourceUrl: "https://commons.wikimedia.org/wiki/File:Tainan_Municipal_Jhongyi_Elementary_School_01.jpg",
   },
 ];
 
