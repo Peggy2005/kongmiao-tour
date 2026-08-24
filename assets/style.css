@@ -287,15 +287,17 @@ img {
 }
 
 /* =====================================================================
-   窗花雷紋裝飾：仿孔廟花格窗的直式窗櫺紋樣（雙側邊框＋菱花），
-   直式 tile 鋪兩側邊框與眉標小圖示，橫式 tile（座標轉置 90°）鋪每個段落開頭的分隔線。
+   回紋雷紋裝飾：內外雙方框＋短連接線的獨立單元，逐一堆疊成鏈狀邊框。
+   每個單元完整收在自己的方格內、不越界，堆疊時靠連接線首尾相接，
+   四個角不會跟相鄰單元重疊。直式 tile 鋪兩側邊框，橫式 tile（連接線改左右向）
+   鋪每個段落開頭的分隔線，兩者共用同一組方框座標，只有連接線方向不同。
    ===================================================================== */
 :root {
-  --lattice-tile-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 128'%3E%3Cg fill='none' stroke='%238c3324' stroke-width='3' stroke-linecap='square'%3E%3Cline x1='4' y1='0' x2='4' y2='128'/%3E%3Cline x1='28' y1='0' x2='28' y2='128'/%3E%3Cline x1='4' y1='32' x2='28' y2='32'/%3E%3Cpath d='M16 82 L30 96 L16 110 L2 96 Z'/%3E%3Cpath d='M16 90 L22 96 L16 102 L10 96 Z' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
-  --lattice-tile-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 32'%3E%3Cg fill='none' stroke='%238c3324' stroke-width='3' stroke-linecap='square'%3E%3Cline x1='0' y1='4' x2='128' y2='4'/%3E%3Cline x1='0' y1='28' x2='128' y2='28'/%3E%3Cline x1='32' y1='4' x2='32' y2='28'/%3E%3Cpath d='M82 16 L96 2 L110 16 L96 30 Z'/%3E%3Cpath d='M90 16 L96 10 L102 16 L96 22 Z' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
+  --lattice-tile-v: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%238c3324' stroke-width='2.5'%3E%3Cline x1='16' y1='0' x2='16' y2='6'/%3E%3Crect x='6' y='6' width='20' height='20'/%3E%3Crect x='12' y='12' width='8' height='8'/%3E%3Cline x1='16' y1='26' x2='16' y2='32'/%3E%3C/g%3E%3C/svg%3E");
+  --lattice-tile-h: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke='%238c3324' stroke-width='2.5'%3E%3Cline x1='0' y1='16' x2='6' y2='16'/%3E%3Crect x='6' y='6' width='20' height='20'/%3E%3Crect x='12' y='12' width='8' height='8'/%3E%3Cline x1='26' y1='16' x2='32' y2='16'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-/* ---- 段落開頭：橫向窗花分隔線，捲入視窗時由左往右慢慢延伸 ---- */
+/* ---- 段落開頭：橫向回紋分隔線，捲入視窗時由左往右慢慢延伸 ---- */
 .huiwen-divider {
   position: absolute;
   top: 0;
@@ -309,9 +311,9 @@ img {
   height: 100%;
   background-image: var(--lattice-tile-h);
   background-repeat: repeat-x;
-  background-size: 64px 100%;
+  background-size: 30px 100%;
   background-position: center;
-  opacity: 0.55;
+  opacity: 0.6;
   clip-path: inset(0 100% 0 0);
   transition: clip-path 1.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -322,20 +324,20 @@ img {
   position: absolute;
 }
 
-/* ---- 兩側：直向窗花邊框，只在寬螢幕、留白較多時出現 ---- */
+/* ---- 兩側：直向回紋邊框，只在寬螢幕、留白較多時出現 ---- */
 .huiwen-rail {
   position: fixed;
   top: 0;
   bottom: 0;
-  width: 32px;
+  width: 30px;
   z-index: 2;
   pointer-events: none;
   display: none;
   background-image: var(--lattice-tile-v);
   background-repeat: repeat-y;
-  background-size: 100% 128px;
+  background-size: 100% 30px;
   background-position: center;
-  opacity: 0.45;
+  opacity: 0.5;
   clip-path: inset(0 0 100% 0);
   transition: clip-path 1.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -370,15 +372,15 @@ img {
 .panel-head .eyebrow::before {
   content: "";
   display: inline-block;
-  width: 0.55em;
-  height: 1.4em;
+  width: 0.9em;
+  height: 0.9em;
   margin-right: 0.5em;
-  vertical-align: -0.35em;
+  vertical-align: -0.15em;
   background-image: var(--lattice-tile-v);
-  background-size: 100% 200%;
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.8;
+  opacity: 0.85;
 }
 #hero h1 {
   font-size: min(14vw, 3.6rem);

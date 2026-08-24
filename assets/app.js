@@ -184,8 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
     (a, i) => `<button type="button" class="card detail-card" data-source="architecture" data-index="${i}">
       <h3>${a.title}</h3>
       <div class="card-sub">${a.subtitle}</div>
-      <p>${a.text}</p>
-      <span class="card-more">看照片與詳細介紹 →</span>
+      <p>${a.detail}</p>
+      <span class="card-more">查看真實照片 →</span>
     </button>`
   ).join("");
 
@@ -228,8 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
     (n, i) => `<button type="button" class="card detail-card" data-source="nearby" data-index="${i}">
       <span class="card-walk">${n.walk}</span>
       <h3>${n.title}</h3>
-      <p>${n.text}</p>
-      <span class="card-more">看照片與詳細介紹 →</span>
+      <p>${n.detail}</p>
+      <span class="card-more">查看真實照片 →</span>
     </button>`
   ).join("");
 
@@ -238,12 +238,13 @@ document.addEventListener("DOMContentLoaded", () => {
     (p, i) => `<button type="button" class="card detail-card" data-source="plants" data-index="${i}">
       <h3>${p.title}</h3>
       <div class="card-latin">${p.latin}</div>
-      <p>${p.text}</p>
-      <span class="card-more">看照片與詳細介紹 →</span>
+      <p>${p.detail}</p>
+      <span class="card-more">查看真實照片 →</span>
     </button>`
   ).join("");
 
-  // ---- 詳細內容彈窗（建築特色／周邊景點／園區植物共用）----
+  // ---- 照片檢視彈窗（建築特色／周邊景點／園區植物共用；文字已經直接寫在內文卡片裡，
+  //      這裡只負責放大看照片＋出處，不重複顯示長文字）----
   const DETAIL_SOURCES = { architecture: ARCHITECTURE, nearby: NEARBY, plants: PLANTS };
   // 只有植物用的是「該物種代表照」，不是孔廟現場實拍，要額外註明；
   // 建築特色與周邊景點的照片都是孔廟／周邊景點現場實拍，不需要這行但示。
@@ -256,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const detailModalCredit = document.getElementById("detailModalCredit");
   const detailModalTitle = document.getElementById("detailModalTitle");
   const detailModalLatin = document.getElementById("detailModalLatin");
-  const detailModalDetail = document.getElementById("detailModalDetail");
 
   function openDetailModal(item, sourceKey) {
     detailModalImg.src = item.image;
@@ -272,7 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       detailModalLatin.classList.add("hidden");
     }
-    detailModalDetail.textContent = item.detail;
     detailModal.classList.remove("hidden");
     document.body.style.overflow = "hidden";
   }
