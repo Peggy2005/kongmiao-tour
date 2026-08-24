@@ -30,6 +30,10 @@
 
     <!-- ============ 主站 ============ -->
     <div id="site" class="hidden">
+      <!-- 兩側雷紋裝飾邊：只在寬螢幕留白較多時出現，進站時由上往下慢慢延伸 -->
+      <div id="railLeft" class="huiwen-rail" aria-hidden="true"></div>
+      <div id="railRight" class="huiwen-rail" aria-hidden="true"></div>
+
       <nav id="topnav">
         <div class="brand">走進孔廟</div>
         <button id="navToggle" aria-label="展開選單">☰</button>
@@ -46,18 +50,20 @@
 
       <!-- ---- Hero ---- -->
       <header id="hero">
-        <div class="roofline"></div>
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="eyebrow">全臺首學．臺南孔廟</div>
         <h1>走進孔廟</h1>
-        <p class="hero-desc">感謝你帶走這張特殊門票紀念品。往下滑，先為今天抽一支籤，<br />再一起走一趟孔廟三百多年的故事。</p>
+        <p class="hero-desc">手上這張門票，是你走進孔廟的邀請函。<br />往下滑，先抽一支今天的籤，我們再一起，一步步走進這座三百多年的廟。</p>
         <a class="scroll-hint" href="#fortune">開始 ↓</a>
       </header>
 
       <!-- ---- 抽籤解籤＋許願 ---- -->
       <section id="fortune" class="panel">
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="panel-head">
-          <div class="eyebrow">今日籤詩</div>
-          <h2>抽籤與解籤</h2>
+          <div class="eyebrow">在踏進廟門之前</div>
+          <h2>要不要先抽一支籤？</h2>
+          <p class="panel-intro">廟埕外，總有人會先求一支籤，帶著今天的心情走進去。</p>
         </div>
 
         <div class="fortune-card">
@@ -77,8 +83,8 @@
 
         <div class="wish-card">
           <div class="eyebrow">許願牌</div>
-          <h3>留下一個願望</h3>
-          <p class="wish-hint">寫下的願望只會保存在你自己的手機裡，不會被任何人看到，也可以存成一張祈福圖片。</p>
+          <h3>如果孔廟聽得到，你想說什麼？</h3>
+          <p class="wish-hint">寫下的話只會留在你自己的手機裡，沒有人會看到——就像悄悄跟老樹說一句話，也可以存成一張祈福圖片。</p>
           <textarea id="wishInput" maxlength="60" placeholder="例如：希望這學期考試順利……"></textarea>
           <div class="wish-actions">
             <button class="btn-primary" id="wishHangBtn">掛上許願牌</button>
@@ -89,20 +95,22 @@
 
       <!-- ---- 建築特色 ---- -->
       <section id="architecture" class="panel alt">
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="panel-head">
-          <div class="eyebrow">認識孔廟</div>
-          <h2>建築特色</h2>
-          <p class="panel-intro">紅牆、宮牆、燕尾脊與花格窗——每一處細節都藏著三百多年的規制與心意。</p>
+          <div class="eyebrow">你現在站在哪裡？</div>
+          <h2>抬頭看，你有注意到什麼嗎？</h2>
+          <p class="panel-intro">從腳下的紅磚地，到頭頂的燕尾脊——這座廟的每一處，都藏著看懂就會心一笑的細節。跟著走，一項一項找找看。</p>
         </div>
         <div id="architectureList" class="card-grid"></div>
       </section>
 
       <!-- ---- 孔廟的故事：八方御匾 ---- -->
       <section id="stories" class="panel">
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="panel-head">
-          <div class="eyebrow">孔廟故事</div>
-          <h2>大成殿八方御匾</h2>
-          <p class="panel-intro">從康熙到光緒，八位清朝皇帝各賜一方御匾，是全球僅見完整保存的孔廟御匾系列。</p>
+          <div class="eyebrow">猜猜看，是哪位皇帝寫的？</div>
+          <h2>大成殿裡的八個字</h2>
+          <p class="panel-intro">從康熙到光緒，八位清朝皇帝各自留下一方御匾，就掛在你剛剛抬頭看到的大成殿裡——這是全球僅見、完整保存的孔廟御匾系列。</p>
         </div>
         <div id="plaqueList" class="plaque-list"></div>
         <p class="plaque-epilogue" id="plaqueEpilogue"></p>
@@ -110,37 +118,41 @@
 
       <!-- ---- 在地連結歷史脈絡 ---- -->
       <section id="context" class="panel alt">
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="panel-head">
-          <div class="eyebrow">在地連結</div>
-          <h2>歷史脈絡</h2>
+          <div class="eyebrow">在你腳下，還有更早的故事</div>
+          <h2>這裡，是臺灣教育的起點</h2>
         </div>
         <div id="contextList" class="timeline"></div>
       </section>
 
       <!-- ---- 建議參觀路線 ---- -->
       <section id="route" class="panel">
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="panel-head">
-          <div class="eyebrow">建議參觀路線</div>
-          <h2>一路走過三百年</h2>
-          <p class="panel-intro">依照孔廟建築軸線設計的參觀順序，約需 40–60 分鐘，也可依現場動線彈性調整。</p>
+          <div class="eyebrow">接下來，你可以這樣走</div>
+          <h2>跟著這條路線，走一遍三百年</h2>
+          <p class="panel-intro">依照孔廟建築軸線設計的參觀順序，約需 40–60 分鐘，也可以依現場動線彈性調整。</p>
         </div>
         <ol id="routeList" class="route-list"></ol>
       </section>
 
       <!-- ---- 周邊景點 ---- -->
       <section id="nearby" class="panel alt">
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="panel-head">
-          <div class="eyebrow">周邊景點指南</div>
-          <h2>順道走走</h2>
+          <div class="eyebrow">離開孔廟之後呢？</div>
+          <h2>順著紅牆，繼續走走</h2>
         </div>
         <div id="nearbyList" class="card-grid"></div>
       </section>
 
       <!-- ---- 園區植物 ---- -->
       <section id="plants" class="panel">
+        <div class="huiwen-divider" data-reveal><div class="huiwen-divider-inner"></div></div>
         <div class="panel-head">
-          <div class="eyebrow">園區植物</div>
-          <h2>孔廟裡的樹</h2>
+          <div class="eyebrow">別急著走</div>
+          <h2>抬頭看看，這些陪孔廟一起變老的樹</h2>
         </div>
         <div id="plantsList" class="card-grid"></div>
       </section>

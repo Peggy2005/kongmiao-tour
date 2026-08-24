@@ -76,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.setTimeout(() => {
       intro.classList.add("hidden");
       site.classList.remove("hidden");
+      growRails();
     }, 700);
     try {
       window.localStorage.setItem("kongmiaoTourIntroSeen", "1");
@@ -83,6 +84,30 @@ document.addEventListener("DOMContentLoaded", () => {
       /* 私密瀏覽模式下 localStorage 可能無法使用，略過即可 */
     }
   }
+
+  // ================= 兩側雷紋邊框：進站後由上往下慢慢延伸 =================
+  const railLeft = document.getElementById("railLeft");
+  const railRight = document.getElementById("railRight");
+  function growRails() {
+    window.setTimeout(() => {
+      railLeft.classList.add("grow");
+      railRight.classList.add("grow");
+    }, 200);
+  }
+
+  // ================= 每個段落開頭的雷紋分隔線：捲入視窗時延伸出現 =================
+  const dividerObserver = new window.IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          dividerObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.2, rootMargin: "0px 0px -8% 0px" }
+  );
+  document.querySelectorAll(".huiwen-divider[data-reveal]").forEach((el) => dividerObserver.observe(el));
 
   function playIntro() {
     buildBricks();
@@ -126,6 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (reduceMotion || alreadySeen) {
     intro.classList.add("hidden");
     site.classList.remove("hidden");
+    growRails();
   } else {
     playIntro();
   }
@@ -138,6 +164,8 @@ document.addEventListener("DOMContentLoaded", () => {
     introWindow.classList.remove("show");
     introDoor.classList.remove("open");
     introLabel.classList.remove("show");
+    railLeft.classList.remove("grow");
+    railRight.classList.remove("grow");
     window.scrollTo({ top: 0 });
     playIntro();
   });

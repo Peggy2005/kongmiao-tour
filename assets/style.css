@@ -30,6 +30,10 @@ body {
 body {
   color: var(--ink);
   font-family: "Noto Serif TC", "PingFang TC", "Microsoft JhengHei", serif;
+  /* 全站淡淡磚紋——呼應開場動畫的紅磚牆，讓磚的意象延續到內文背景裡 */
+  background-image:
+    repeating-linear-gradient(0deg, rgba(140, 51, 36, 0.05) 0 1px, transparent 1px 27px),
+    repeating-linear-gradient(90deg, rgba(140, 51, 36, 0.045) 0 1px, transparent 1px 54px);
 }
 .hidden {
   display: none !important;
@@ -281,19 +285,98 @@ img {
   padding: 14vh 8vw 10vh;
   text-align: center;
 }
-.roofline {
+
+/* =====================================================================
+   雷紋（回紋）裝飾：一個小小的方形螺旋單元，磚紅色，向兩個方向重複拼接。
+   用同一顆 SVG tile，直向鋪成兩側邊框，橫向鋪成每個段落開頭的分隔線。
+   ===================================================================== */
+:root {
+  --huiwen-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 3H21V21H9V9H15V15H12' fill='none' stroke='%238c3324' stroke-width='2' stroke-linecap='square'/%3E%3C/svg%3E");
+}
+
+/* ---- 段落開頭：橫向雷紋分隔線，捲入視窗時由左往右慢慢延伸 ---- */
+.huiwen-divider {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+  height: 16px;
+  overflow: hidden;
 }
+.huiwen-divider-inner {
+  width: 100%;
+  height: 100%;
+  background-image: var(--huiwen-tile);
+  background-repeat: repeat-x;
+  background-size: 22px 100%;
+  background-position: center;
+  opacity: 0.55;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.huiwen-divider.in-view .huiwen-divider-inner {
+  clip-path: inset(0 0 0 0);
+}
+#hero .huiwen-divider {
+  position: absolute;
+}
+
+/* ---- 兩側：直向雷紋邊框，只在寬螢幕、留白較多時出現 ---- */
+.huiwen-rail {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  z-index: 2;
+  pointer-events: none;
+  display: none;
+  background-image: var(--huiwen-tile);
+  background-repeat: repeat-y;
+  background-size: 100% 30px;
+  background-position: center;
+  opacity: 0.4;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#railLeft {
+  left: 0;
+}
+#railRight {
+  right: 0;
+}
+@media (min-width: 1180px) {
+  .huiwen-rail {
+    display: block;
+  }
+}
+.huiwen-rail.grow {
+  clip-path: inset(0 0 0% 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .huiwen-divider-inner,
+  .huiwen-rail {
+    transition: none;
+    clip-path: inset(0 0 0 0) !important;
+  }
+}
+
 .eyebrow {
   font-size: 0.78rem;
   letter-spacing: 0.3em;
   color: var(--ink-soft);
   margin-bottom: 1rem;
+}
+.panel-head .eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-right: 0.5em;
+  vertical-align: -0.1em;
+  background-image: var(--huiwen-tile);
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.75;
 }
 #hero h1 {
   font-size: min(14vw, 3.6rem);
@@ -317,13 +400,18 @@ img {
 }
 
 .panel {
+  position: relative;
   padding: 8vh 6vw;
   max-width: 980px;
   margin: 0 auto;
 }
 .panel.alt {
   max-width: none;
-  background: var(--bg-alt);
+  background-color: var(--bg-alt);
+  /* alt 區塊蓋掉了 body 的磚紋，這裡用同一組紋理補回去，讓紅磚意象貫穿全站 */
+  background-image:
+    repeating-linear-gradient(0deg, rgba(140, 51, 36, 0.05) 0 1px, transparent 1px 27px),
+    repeating-linear-gradient(90deg, rgba(140, 51, 36, 0.045) 0 1px, transparent 1px 54px);
 }
 .panel.alt > * {
   max-width: 980px;
