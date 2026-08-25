@@ -464,50 +464,134 @@ document.addEventListener("DOMContentLoaded", () => {
     if (line) ctx.fillText(line, x, curY);
   }
 
-  // ================= 許願牌（僅存於使用者本機 localStorage）=================
-  const WISH_KEY = "kongmiaoTourWishes";
-  const wishInput = document.getElementById("wishInput");
-  const wishWall = document.getElementById("wishWall");
-  const wishHangBtn = document.getElementById("wishHangBtn");
-
-  function loadWishes() {
-    try {
-      return JSON.parse(window.localStorage.getItem(WISH_KEY) || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-  function saveWishes(list) {
-    try {
-      window.localStorage.setItem(WISH_KEY, JSON.stringify(list.slice(-12)));
-    } catch (e) {
-      /* 無法寫入時，願望仍會顯示在畫面上，只是重整後不會保留 */
-    }
-  }
-  function renderWishes(list) {
-    wishWall.innerHTML = list
-      .map((w) => `<span class="wish-tag">✦ ${escapeHtml(w)}</span>`)
-      .join("");
-  }
   function escapeHtml(str) {
     const div = document.createElement("div");
     div.textContent = str;
     return div.innerHTML;
   }
 
-  let wishes = loadWishes();
-  renderWishes(wishes);
+  // ================= 許願牆：彈幕式共用牆（Cloudflare Worker + D1，全部遊客共用）=================
+  const wishInput = document.getElementById("wishInput");
+  const wishHangBtn = document.getElementById("wishHangBtn");
+  const wishCount = document.getElementById("wishCount");
+  const wishDanmaku = document.getElementById("wishDanmaku");
+  const wishDanmakuEmpty = document.getElementById("wishDanmakuEmpty");
+  const WISH_MAX_CHARS = 100;
+  const WISH_TONES = ["tone-gold", "tone-brick", "tone-cream"];
+  const shownWishIds = new Set();
+  let wishSubmitting = false;
 
-  wishHangBtn.addEventListener("click", () => {
+  function updateWishCount() {
+    const len = Array.from(wishInput.value).length;
+    wishCount.textContent = `${len}/${WISH_MAX_CHARS}`;
+  }
+  wishInput.addEventListener("input", updateWishCount);
+  updateWishCount();
+
+  function hashCode(str) {
+    let h = 0;
+    for (let i = 0; i < str.length; i++) {
+      h = (h << 5) - h + str.charCodeAt(i);
+      h |= 0;
+    }
+    return Math.abs(h);
+  }
+
+  function spawnWishNote(wish) {
+    const id = String(wish.id);
+    if (shownWishIds.has(id)) return;
+    shownWishIds.add(id);
+    wishDanmakuEmpty.classList.add("hidden");
+
+    const note = document.createElement("div");
+    const tone = WISH_TONES[hashCode(id) % WISH_TONES.length];
+    note.className = `wish-note ${tone}`;
+    note.dataset.id = id;
+    note.textContent = wish.text;
+
+    const laneCount = 4;
+    const lane = Math.floor(Math.random() * laneCount);
+    note.style.top = `calc(${(lane * 100) / laneCount}% + ${6 + Math.random() * 10}px)`;
+
+    const duration = 13 + Math.random() * 9; // 13-22 秒飄完一趟
+    const delay = -Math.random() * duration; // 負的 delay：一開始就有牌飄在畫面各處，不用等
+    note.style.animationDuration = `${duration.toFixed(2)}s`;
+    note.style.animationDelay = `${delay.toFixed(2)}s`;
+    note.style.setProperty("--wish-rot", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
+
+    const containerWidth = wishDanmaku.clientWidth || 320;
+    note.style.setProperty("--wish-start", `${containerWidth}px`);
+    note.style.setProperty("--wish-end", "-360px");
+
+    wishDanmaku.appendChild(note);
+  }
+
+  function syncWishWall(wishes) {
+    const idsFromServer = new Set(wishes.map((w) => String(w.id)));
+    // 伺服器只留最新 50 則，被擠掉的舊願望也要跟著從牆上移除
+    wishDanmaku.querySelectorAll(".wish-note").forEach((el) => {
+      if (!idsFromServer.has(el.dataset.id)) {
+        shownWishIds.delete(el.dataset.id);
+        el.remove();
+      }
+    });
+    wishes.forEach(spawnWishNote);
+    wishDanmakuEmpty.classList.toggle("hidden", wishes.length > 0);
+  }
+
+  async function fetchWishes() {
+    try {
+      const res = await fetch(WISH_API, { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      syncWishWall(data.wishes || []);
+    } catch (e) {
+      /* 連不上許願牆 API 時，牆上維持現有內容，不特別打擾使用者 */
+    }
+  }
+
+  async function submitWish() {
     const text = wishInput.value.trim();
     if (!text) {
       showToast("先寫下你的願望吧");
       return;
     }
-    wishes.push(text);
-    saveWishes(wishes);
-    renderWishes(wishes);
-    wishInput.value = "";
-    showToast("願望已掛上許願牌");
+    if (Array.from(text).length > WISH_MAX_CHARS) {
+      showToast(`願望有點長，${WISH_MAX_CHARS} 字以內比較容易被看到`);
+      return;
+    }
+    if (wishSubmitting) return;
+    wishSubmitting = true;
+    wishHangBtn.disabled = true;
+    try {
+      const res = await fetch(WISH_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      });
+      if (res.status === 429) {
+        showToast("你剛剛才貼過一則，等一下下再貼下一個願望");
+      } else if (!res.ok) {
+        showToast("願望暫時送不出去，等一下再試試看");
+      } else {
+        wishInput.value = "";
+        updateWishCount();
+        showToast("願望已掛上許願牆");
+        fetchWishes();
+      }
+    } catch (e) {
+      showToast("網路好像不太穩，願望暫時送不出去");
+    } finally {
+      wishSubmitting = false;
+      wishHangBtn.disabled = false;
+    }
+  }
+
+  wishHangBtn.addEventListener("click", submitWish);
+  wishInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submitWish();
   });
+
+  fetchWishes();
+  window.setInterval(fetchWishes, 20000);
 });

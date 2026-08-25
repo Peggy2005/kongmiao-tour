@@ -364,6 +364,9 @@ const FORTUNE_POOL = [
   { title: "禮門義路", stars: 3, text: "今天做選擇時，多想一步「這樣做對嗎」，比想「這樣做快嗎」更重要。" },
 ];
 
+// ---------------- 許願牆 API（Cloudflare Worker + D1，見 kongmiao-wishes-worker/） ----------------
+const WISH_API = "https://kongmiao-wishes.linlay-dev.workers.dev/wishes";
+
 function drawFortune() {
   return FORTUNE_POOL[Math.floor(Math.random() * FORTUNE_POOL.length)];
 }
