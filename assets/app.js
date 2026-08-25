@@ -532,7 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <span class="wish-tassel"></span>
     `;
     const chars = Array.from(wish.text);
-    const preview = chars.length > 7 ? chars.slice(0, 7).join("") + "…" : wish.text;
+    const preview = chars.length > 5 ? chars.slice(0, 5).join("") + "…" : wish.text;
     slot.querySelector(".wish-plaque-text").textContent = preview;
     slot.dataset.text = wish.text;
 
