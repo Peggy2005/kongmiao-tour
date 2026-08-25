@@ -531,7 +531,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <span class="wish-plaque"><span class="wish-plaque-text"></span></span>
       <span class="wish-tassel"></span>
     `;
-    slot.querySelector(".wish-plaque-text").textContent = wish.text;
+    const chars = Array.from(wish.text);
+    const preview = chars.length > 7 ? chars.slice(0, 7).join("") + "…" : wish.text;
+    slot.querySelector(".wish-plaque-text").textContent = preview;
     slot.dataset.text = wish.text;
 
     slot.addEventListener("click", () => openWishDetail(slot));
