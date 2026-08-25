@@ -470,16 +470,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return div.innerHTML;
   }
 
-  // ================= 許願牆：彈幕式共用牆（Cloudflare Worker + D1，全部遊客共用）=================
+  // ================= 許願牆：木牌掛在木架上，所有遊客共用同一面牆 =================
   const wishInput = document.getElementById("wishInput");
   const wishHangBtn = document.getElementById("wishHangBtn");
   const wishCount = document.getElementById("wishCount");
-  const wishDanmaku = document.getElementById("wishDanmaku");
-  const wishDanmakuEmpty = document.getElementById("wishDanmakuEmpty");
+  const wishWall = document.getElementById("wishWall");
+  const wishWallEmpty = document.getElementById("wishWallEmpty");
+  const wishDetailOverlay = document.getElementById("wishDetailOverlay");
+  const wishDetailText = document.getElementById("wishDetailText");
   const WISH_MAX_CHARS = 100;
-  const WISH_TONES = ["tone-gold", "tone-brick", "tone-cream"];
+  const MY_UNSEEN_KEY = "kongmiaoTourMyUnseenWishIds";
   const shownWishIds = new Set();
   let wishSubmitting = false;
+  let openWishId = null; // 目前全螢幕開著的是哪一塊木牌
 
   function updateWishCount() {
     const len = Array.from(wishInput.value).length;
@@ -488,55 +491,65 @@ document.addEventListener("DOMContentLoaded", () => {
   wishInput.addEventListener("input", updateWishCount);
   updateWishCount();
 
-  function hashCode(str) {
-    let h = 0;
-    for (let i = 0; i < str.length; i++) {
-      h = (h << 5) - h + str.charCodeAt(i);
-      h |= 0;
+  // ---- 「這是我剛掛上去的牌」清單：只存在這台裝置的 localStorage，
+  //      別人的裝置看不到、也不會被別人的牌影響 ----
+  function loadMyUnseenIds() {
+    try {
+      return new Set(JSON.parse(window.localStorage.getItem(MY_UNSEEN_KEY) || "[]"));
+    } catch (e) {
+      return new Set();
     }
-    return Math.abs(h);
   }
+  function saveMyUnseenIds(set) {
+    try {
+      window.localStorage.setItem(MY_UNSEEN_KEY, JSON.stringify(Array.from(set)));
+    } catch (e) {
+      /* 存不進去就算了，最多這台裝置少了發光提示，不影響核心功能 */
+    }
+  }
+  let myUnseenIds = loadMyUnseenIds();
 
-  function spawnWishNote(wish) {
+  function spawnWishPlaque(wish) {
     const id = String(wish.id);
     if (shownWishIds.has(id)) return;
     shownWishIds.add(id);
-    wishDanmakuEmpty.classList.add("hidden");
+    wishWallEmpty.classList.add("hidden");
 
-    const note = document.createElement("div");
-    const tone = WISH_TONES[hashCode(id) % WISH_TONES.length];
-    note.className = `wish-note ${tone}`;
-    note.dataset.id = id;
-    note.textContent = wish.text;
+    const slot = document.createElement("button");
+    slot.type = "button";
+    slot.className = "wish-plaque-slot" + (myUnseenIds.has(id) ? " glow" : "");
+    slot.dataset.id = id;
+    slot.setAttribute("aria-label", "查看這塊木牌上的願望");
 
-    const laneCount = 4;
-    const lane = Math.floor(Math.random() * laneCount);
-    note.style.top = `calc(${(lane * 100) / laneCount}% + ${6 + Math.random() * 10}px)`;
+    const duration = 3 + Math.random() * 1.6; // 3-4.6 秒搖一次
+    const delay = -Math.random() * duration; // 負的 delay：一開始就是滿牆輕輕搖晃，不會同步
+    slot.style.animationDuration = `${duration.toFixed(2)}s`;
+    slot.style.animationDelay = `${delay.toFixed(2)}s`;
 
-    const duration = 13 + Math.random() * 9; // 13-22 秒飄完一趟
-    const delay = -Math.random() * duration; // 負的 delay：一開始就有牌飄在畫面各處，不用等
-    note.style.animationDuration = `${duration.toFixed(2)}s`;
-    note.style.animationDelay = `${delay.toFixed(2)}s`;
-    note.style.setProperty("--wish-rot", `${(Math.random() * 6 - 3).toFixed(1)}deg`);
+    slot.innerHTML = `
+      <span class="wish-cord"></span>
+      <span class="wish-plaque"><span class="wish-plaque-text"></span></span>
+      <span class="wish-tassel"></span>
+    `;
+    slot.querySelector(".wish-plaque-text").textContent = wish.text;
+    slot.dataset.text = wish.text;
 
-    const containerWidth = wishDanmaku.clientWidth || 320;
-    note.style.setProperty("--wish-start", `${containerWidth}px`);
-    note.style.setProperty("--wish-end", "-360px");
+    slot.addEventListener("click", () => openWishDetail(slot));
 
-    wishDanmaku.appendChild(note);
+    wishWall.appendChild(slot);
   }
 
   function syncWishWall(wishes) {
     const idsFromServer = new Set(wishes.map((w) => String(w.id)));
     // 伺服器只留最新 50 則，被擠掉的舊願望也要跟著從牆上移除
-    wishDanmaku.querySelectorAll(".wish-note").forEach((el) => {
+    wishWall.querySelectorAll(".wish-plaque-slot").forEach((el) => {
       if (!idsFromServer.has(el.dataset.id)) {
         shownWishIds.delete(el.dataset.id);
         el.remove();
       }
     });
-    wishes.forEach(spawnWishNote);
-    wishDanmakuEmpty.classList.toggle("hidden", wishes.length > 0);
+    wishes.forEach(spawnWishPlaque);
+    wishWallEmpty.classList.toggle("hidden", wishes.length > 0);
   }
 
   async function fetchWishes() {
@@ -549,6 +562,28 @@ document.addEventListener("DOMContentLoaded", () => {
       /* 連不上許願牆 API 時，牆上維持現有內容，不特別打擾使用者 */
     }
   }
+
+  // ---- 點木牌：全螢幕放大看完整內容 ----
+  function openWishDetail(slot) {
+    openWishId = slot.dataset.id;
+    wishDetailText.textContent = slot.dataset.text;
+    wishDetailOverlay.classList.remove("hidden");
+  }
+  function closeWishDetail() {
+    // 看過、關閉之後，如果這塊剛好是「我剛掛上去」的牌，發光就永久停掉
+    if (openWishId && myUnseenIds.has(openWishId)) {
+      myUnseenIds.delete(openWishId);
+      saveMyUnseenIds(myUnseenIds);
+      const slot = wishWall.querySelector(`.wish-plaque-slot[data-id="${openWishId}"]`);
+      if (slot) slot.classList.remove("glow");
+    }
+    openWishId = null;
+    wishDetailOverlay.classList.add("hidden");
+  }
+  wishDetailOverlay.addEventListener("click", closeWishDetail);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !wishDetailOverlay.classList.contains("hidden")) closeWishDetail();
+  });
 
   async function submitWish() {
     const text = wishInput.value.trim();
@@ -574,6 +609,11 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (!res.ok) {
         showToast("願望暫時送不出去，等一下再試試看");
       } else {
+        const data = await res.json();
+        if (data.id != null) {
+          myUnseenIds.add(String(data.id));
+          saveMyUnseenIds(myUnseenIds);
+        }
         wishInput.value = "";
         updateWishCount();
         showToast("願望已掛上許願牆");

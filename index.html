@@ -108,8 +108,9 @@
           <div class="eyebrow">許願牆</div>
           <h3>如果孔廟聽得到，你想說什麼？</h3>
           <p class="wish-hint">
-            寫下的話會飄到下面的許願牆上，跟其他遊客一起看到——這是公開的牆，請不要留下姓名、電話等個人資料。
-            牆上最多同時留 50 則，滿了會由最新的自動蓋掉最舊的。
+            寫下的話會掛上下面的許願牆，跟其他遊客一起看到——這是公開的牆，請不要留下姓名、電話等個人資料。
+            牆上最多同時留 50 則，滿了會由最新的自動蓋掉最舊的。點木牌可以看完整內容，再點一次螢幕就關閉；
+            你剛掛上去的那一塊，會發光到你點開看過為止。
           </p>
           <textarea id="wishInput" maxlength="100" placeholder="例如：希望這學期考試順利……"></textarea>
           <div class="wish-meta">
@@ -121,9 +122,16 @@
         </div>
 
         <div class="wish-wall-frame">
-          <div class="wish-wall-label">許願牆．目前飄著大家的願望</div>
-          <div id="wishDanmaku" class="wish-danmaku" aria-live="off">
-            <p class="wish-danmaku-empty" id="wishDanmakuEmpty">牆上還沒有願望，當第一個寫下心願的人吧。</p>
+          <div class="wish-wall-label">許願牆．點木牌看完整內容</div>
+          <div id="wishWall" class="wish-wall" aria-live="off">
+            <p class="wish-wall-empty" id="wishWallEmpty">牆上還沒有願望，當第一個掛牌的人吧。</p>
+          </div>
+        </div>
+
+        <!-- 願望完整內容：全螢幕放大彈窗 -->
+        <div id="wishDetailOverlay" class="wish-detail-overlay hidden">
+          <div class="wish-detail-plaque">
+            <span class="wish-detail-text" id="wishDetailText"></span>
           </div>
         </div>
       </section>
