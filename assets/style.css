@@ -935,6 +935,32 @@ button.card.detail-card:active {
 .credits-card .eyebrow {
   margin-bottom: 0.6rem;
 }
+.credits-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  margin: 0 0 1.2rem;
+}
+.credits-person {
+  margin-bottom: 1.4rem;
+}
+.credits-name {
+  font-weight: 700;
+  color: var(--brick);
+  margin: 0 0 0.3rem;
+}
+.credits-desc {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.credits-outro {
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  line-height: 1.9;
+}
 .card .card-walk {
   display: inline-block;
   font-size: 0.75rem;
