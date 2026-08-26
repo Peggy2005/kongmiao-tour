@@ -926,6 +926,15 @@ button.card.detail-card:active {
   line-height: 2;
   font-size: 0.95rem;
 }
+
+/* ---- 禮虎的小秘密：開發者致謝彈窗（沒有照片，補一點上方留白給關閉鈕） ---- */
+.credits-card .modal-body {
+  padding-top: 2.6rem;
+  text-align: center;
+}
+.credits-card .eyebrow {
+  margin-bottom: 0.6rem;
+}
 .card .card-walk {
   display: inline-block;
   font-size: 0.75rem;

@@ -18,6 +18,73 @@ document.addEventListener("DOMContentLoaded", () => {
     window.setTimeout(() => toast.classList.remove("show"), 1600);
   }
 
+  // ================= 禮虎的小秘密：點兩下或長按，看開發者致謝 =================
+  // 單擊禮虎照原本行為開新分頁去孔廟官網；點兩下、或按住不放，
+  // 則不導頁，改成彈出這個小彩蛋。
+  const mascotLink = document.getElementById("mascotLink");
+  const creditsModal = document.getElementById("creditsModal");
+  const creditsModalBackdrop = document.getElementById("creditsModalBackdrop");
+  const creditsModalClose = document.getElementById("creditsModalClose");
+
+  function openCreditsModal() {
+    creditsModal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+  function closeCreditsModal() {
+    creditsModal.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+  creditsModalBackdrop.addEventListener("click", closeCreditsModal);
+  creditsModalClose.addEventListener("click", closeCreditsModal);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !creditsModal.classList.contains("hidden")) closeCreditsModal();
+  });
+
+  if (mascotLink) {
+    const LONG_PRESS_MS = 600;
+    const DBLCLICK_MS = 350;
+    let longPressTimer = null;
+    let longPressFired = false;
+    let clickCount = 0;
+    let clickTimer = null;
+
+    function startPress() {
+      longPressFired = false;
+      longPressTimer = window.setTimeout(() => {
+        longPressFired = true;
+        openCreditsModal();
+      }, LONG_PRESS_MS);
+    }
+    function cancelPress() {
+      window.clearTimeout(longPressTimer);
+    }
+    mascotLink.addEventListener("mousedown", startPress);
+    mascotLink.addEventListener("touchstart", startPress, { passive: true });
+    mascotLink.addEventListener("mouseup", cancelPress);
+    mascotLink.addEventListener("mouseleave", cancelPress);
+    mascotLink.addEventListener("touchend", cancelPress);
+    mascotLink.addEventListener("touchcancel", cancelPress);
+
+    mascotLink.addEventListener("click", (e) => {
+      e.preventDefault(); // 一律自己接管，決定要開新分頁還是彈出小彩蛋
+      if (longPressFired) {
+        longPressFired = false; // 長按已經開過彩蛋了，這次點擊不用再做事
+        return;
+      }
+      clickCount += 1;
+      if (clickCount === 1) {
+        clickTimer = window.setTimeout(() => {
+          window.open("https://www.tn-confucius.org.tw", "_blank", "noopener");
+          clickCount = 0;
+        }, DBLCLICK_MS);
+      } else {
+        window.clearTimeout(clickTimer);
+        clickCount = 0;
+        openCreditsModal();
+      }
+    });
+  }
+
   // ================= 入口動畫：磚牆消失 → 廟門開啟 → 窗花拼合 =================
   const intro = document.getElementById("intro");
   const site = document.getElementById("site");
